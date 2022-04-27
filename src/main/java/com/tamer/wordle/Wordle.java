@@ -45,6 +45,7 @@ import javafx.animation.PauseTransition;
 import javafx.beans.property.StringProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.Background;
@@ -88,7 +89,6 @@ public class Wordle extends Application {
         }
         curLetterCol = curLetterRow = 0;
         isFinished = false;
-        System.out.println(curWord);
     }
     
     private boolean isWin(){
@@ -114,6 +114,7 @@ public class Wordle extends Application {
         Text txtInfo = new Text();
         Text txtWin = new Text();
         Button btnNewGame = new Button("Play Again!");
+        Button btnGiveUp = new Button("Give Up!");
         GridPane gridPane = new GridPane();
         gridPane.setPadding(new Insets(10));
         gridPane.setHgap(4);
@@ -122,6 +123,8 @@ public class Wordle extends Application {
         Rectangle[][] rect = new Rectangle[6][6];
         Text[][] letters = new Text[6][6];
         DropShadow dropShadow = new DropShadow();
+        Hyperlink gitLink = new Hyperlink("https://github.com/tamer-badawy/wordle");
+        
         dropShadow.setRadius(5.0);
         dropShadow.setOffsetX(3.0);
         dropShadow.setOffsetY(3.0);
@@ -173,13 +176,37 @@ public class Wordle extends Application {
             txtInfo.setManaged(false);
             txtInfo.setVisible(false);
         });
+        
+        btnGiveUp.setBackground(new Background(new BackgroundFill(Color.web("#a4aec4"),null,null)));
+        btnGiveUp.setTextFill(Color.WHITESMOKE);
+        btnGiveUp.setFont(Font.font("Roboto",FontWeight.SEMI_BOLD,25));
+        
+        btnGiveUp.setEffect(dropShadow);
+        btnGiveUp.setOnAction(eh -> {
+            btnGiveUp.setEffect(null);
+            PauseTransition pause = new PauseTransition(Duration.seconds(0.2));
+                pause.setOnFinished(e -> btnGiveUp.setEffect(dropShadow));
+            pause.play();
+            isFinished = true;
+            txtInfo.setManaged(true);
+            txtInfo.setFill(Color.RED);
+            txtInfo.setVisible(true);
+            gameStatus.set(curWord.toUpperCase());
+            txtWin.setText("You Lost!");
+            winBox.setVisible(true);
+            winBox.setManaged(true);
+        });
         winBox.getChildren().addAll(txtWin,btnNewGame);
         winBox.setVisible(false);
         winBox.setManaged(false);
-        vbox.setAlignment(Pos.CENTER);
-        vbox.getChildren().addAll(txtInfo, new StackPane(gridPane,winBox));
         
-        var scene = new Scene(vbox, 800, 600,Color.WHITESMOKE);
+        gitLink.setOnAction(eh -> {
+            getHostServices().showDocument("https://github.com/tamer-badawy/wordle");
+        });
+        vbox.setAlignment(Pos.CENTER);
+        vbox.getChildren().addAll(txtInfo, new StackPane(gridPane,winBox),btnGiveUp, gitLink);
+        
+        var scene = new Scene(vbox, 800, 700,Color.WHITESMOKE);
         scene.setOnKeyPressed((KeyEvent eh) -> {
             
             if(!isFinished){
