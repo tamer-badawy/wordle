@@ -23,6 +23,7 @@ package com.tamer.wordle;
  * 
  */
 
+import java.nio.file.Paths;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
@@ -47,6 +48,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -176,13 +178,14 @@ public class Wordle extends Application {
             txtInfo.setManaged(false);
             txtInfo.setVisible(false);
         });
-        
+       
+        btnGiveUp.setFocusTraversable(false);
         btnGiveUp.setBackground(new Background(new BackgroundFill(Color.web("#a4aec4"),null,null)));
         btnGiveUp.setTextFill(Color.WHITESMOKE);
         btnGiveUp.setFont(Font.font("Roboto",FontWeight.SEMI_BOLD,25));
         
         btnGiveUp.setEffect(dropShadow);
-        btnGiveUp.setOnAction(eh -> {
+        btnGiveUp.setOnMouseClicked(eh -> {
             btnGiveUp.setEffect(null);
             PauseTransition pause = new PauseTransition(Duration.seconds(0.2));
                 pause.setOnFinished(e -> btnGiveUp.setEffect(dropShadow));
@@ -199,8 +202,8 @@ public class Wordle extends Application {
         winBox.getChildren().addAll(txtWin,btnNewGame);
         winBox.setVisible(false);
         winBox.setManaged(false);
-        
-        gitLink.setOnAction(eh -> {
+        gitLink.setFocusTraversable(false);
+        gitLink.setOnMouseClicked(eh -> {
             getHostServices().showDocument("https://github.com/tamer-badawy/wordle");
         });
         vbox.setAlignment(Pos.CENTER);
@@ -268,6 +271,9 @@ public class Wordle extends Application {
             }
             }
         });
+        stage.getIcons().add(new Image("file:icon.png"));
+        stage.setTitle("Wordle Game");
+       
         stage.setScene(scene);
         stage.show();
         newGame(rect);
