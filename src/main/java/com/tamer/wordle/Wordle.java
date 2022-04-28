@@ -23,7 +23,6 @@ package com.tamer.wordle;
  * 
  */
 
-import java.nio.file.Paths;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
