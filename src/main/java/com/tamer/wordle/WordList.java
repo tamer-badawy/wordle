@@ -24,8 +24,9 @@ package com.tamer.wordle;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import java.io.FileReader;
-import java.io.Reader;
+import java.io.InputStream;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.io.IOException;
 import java.util.function.Predicate;
@@ -39,24 +40,21 @@ public class WordList {
     private static ArrayList<String> words;
     private ArrayList<String> filteredWords;
     
-    static{
+    
+    public WordList(){
+        this(6);
+    }
+    
+    public WordList(int wordLen){
         Gson gson  = new Gson();
-        try(Reader reader = new FileReader("words.json")){
+        try(InputStream is = getClass().getResourceAsStream("/words.json");
+                BufferedReader reader = new BufferedReader(new InputStreamReader(is))
+                ){
             words = gson.fromJson(reader,
                 new TypeToken<ArrayList<String>>(){}.getType());            
         }catch(IOException ex){
             ex.printStackTrace();
         }
-        
-        
-    }
-    
-    public WordList(){
-        this.wordLen = 6;
-        this.updateFilteredWords();
-    }
-    
-    public WordList(int wordLen){
         this.wordLen = wordLen;
         this.updateFilteredWords();
     }
