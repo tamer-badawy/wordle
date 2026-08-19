@@ -82,12 +82,12 @@ mvn javafx:run
 ├── src/
 │   └── main/
 │       ├── java/
-│       │   └── com/wordle/
-│       │       ├── Main.java          # Application entry point
-│       │       ├── controller/        # Game logic handlers
-│       │       └── ui/                # JavaFX view components
+│       │   └── com/tamer/wordle/
+│       │       ├── AppLauncher.java          # Application entry point
+│       │       ├── WordList                  # Game logic handlers
+│       │       └── Wordle.java               # Main Game and JavaFX view components
 │       └── resources/
-│           └── words.txt              # Dictionary containing secret words
+│           └── words.json             # Dictionary containing secret words
 ├── pom.xml                            # Maven configurations (dependencies for openjfx plugins)
 └── README.md                          # Documentation
 ```
